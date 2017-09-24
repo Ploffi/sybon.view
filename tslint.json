@@ -1,0 +1,8 @@
+{
+    "extends": [
+      "@extern/tslint"
+    ],
+    "rules": {
+      "no-constant-condition": true
+    }
+  }
