@@ -1,0 +1,40 @@
+
+{
+    "collections": [
+  {
+    "name": "Ivan",
+    "status": "Employed",
+    "id": 6875
+  },
+  {
+    "name": "Randal White",
+    "status": "Unemployed",
+    "id": 2010
+  },
+  {
+    "name": "Stephanie Sanders",
+    "status": "Employed",
+    "id": 113
+  },
+  {
+    "name": "Steve Brown",
+    "status": "Employed",
+    "id": 2863
+  },
+  {
+    "name": "Joyce Whitten",
+    "status": "Employed",
+    "id": 7533
+  },
+  {
+    "name": "Samuel Roberts",
+    "status": "Employed",
+    "id": 1558
+  },
+  {
+    "name": "Adam Moore",
+    "status": "Employed",
+    "id": 3936
+  }
+]
+}

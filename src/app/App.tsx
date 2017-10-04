@@ -1,11 +1,36 @@
 import * as React from 'react';
 import {MuiThemeProvider, darkBaseTheme, getMuiTheme} from 'material-ui/styles';
-import AppBar from 'material-ui/AppBar';
+import Tabs from 'material-ui/Tabs';
+import Tab from 'material-ui/Tabs/Tab';
+import CollectionWrapper from './../Collections/CollectionWrapper';
 
-const Main = (props) => (
-  <MuiThemeProvider muiTheme={getMuiTheme(darkBaseTheme)}>
-    <AppBar title='My AppBar' />
+const muiTheme = getMuiTheme({
+  fontFamily: 'Segoe UI',
+  palette: {
+    primary1Color: '#424242',
+    primary2Color: '#1b1b1b',
+    accent1Color: '#a5d6a7',
+    textColor: '#283593',
+    alternateTextColor: '#b2ebf2',
+    secondaryTextColor: '#000000',
+  },
+});
+
+const App = (props) => (
+  <MuiThemeProvider muiTheme={muiTheme}>
+    <Tabs>
+    <Tab label='Коллекции' value='a'>
+    <div>
+     <CollectionWrapper />
+    </div>
+  </Tab>
+  <Tab label='Задачи' value='b'>
+    <div>
+      Задачи
+    </div>
+  </Tab>
+    </Tabs>
   </MuiThemeProvider>
 );
 
-export default Main;
+export default App;
