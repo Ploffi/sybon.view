@@ -10,8 +10,8 @@ ReactDOM.render(
   rootEl
 );
 
-if ((module as any).hot) {
-  (module as any).hot.accept('./app/App', () => {
+if (module.hot) {
+  module.hot.accept('./app/App', () => {
     const NextApp = require('./app/App').default;
     ReactDOM.render(
       <NextApp />
