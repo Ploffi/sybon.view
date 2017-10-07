@@ -43,16 +43,6 @@ export default class TableExampleComplex extends React.Component {
     height: '300px',
   };
 
-  handleToggle = (event, toggled) => {
-    this.setState({
-      [event.target.name]: toggled,
-    });
-  }
-
-  handleChange = (event) => {
-    this.setState({height: event.target.value});
-  }
-
   render() {
     return (
       <div>

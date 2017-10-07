@@ -1,3 +1,7 @@
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const webpack = require('webpack');
+
+
 module.exports = {
     entry:  [
         "./src/index.tsx",
@@ -7,13 +11,25 @@ module.exports = {
         path: __dirname + "/build"
     },
 
-    // Enable sourcemaps for debugging webpack's output.
     devtool: "source-map",
+
+    devServer: {
+        contentBase: './dist',
+        hot: true
+    },
 
     resolve: {
         // Add '.ts' and '.tsx' as resolvable extensions.
         extensions: [".ts", ".tsx", ".js", ".json"]
     },
+
+    plugins: [
+        new HtmlWebpackPlugin({
+          title: 'Hot Module Replacement',
+          template: 'index.template.ejs'
+        }),
+       new webpack.HotModuleReplacementPlugin()
+      ],
 
     module: {
         rules: [
