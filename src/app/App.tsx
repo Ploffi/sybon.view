@@ -1,8 +1,9 @@
 import * as React from 'react';
-import {MuiThemeProvider, darkBaseTheme, getMuiTheme} from 'material-ui/styles';
+import { MuiThemeProvider, darkBaseTheme, getMuiTheme } from 'material-ui/styles';
 import Tabs from 'material-ui/Tabs';
 import Tab from 'material-ui/Tabs/Tab';
 import CollectionWrapper from './../Collections/CollectionWrapper';
+import Paper from 'material-ui/Paper';
 
 const muiTheme = getMuiTheme({
   fontFamily: 'Segoe UI',
@@ -19,16 +20,17 @@ const muiTheme = getMuiTheme({
 const App = (props) => (
   <MuiThemeProvider muiTheme={muiTheme}>
     <Tabs>
-    <Tab label='Коллекции' value='a'>
-    <div>
-     <CollectionWrapper />
-    </div>
-  </Tab>
-  <Tab label='Задачи' value='b'>
-    <div>
-      Задачи
-    </div>
-  </Tab>
+      <Tab label='Коллекции' value='a'>
+        <Paper zDepth={2}>
+          <CollectionWrapper />
+        </Paper>
+        
+      </Tab>
+      <Tab label='Задачи' value='b'>
+        <div>
+          Задачи
+        </div>
+      </Tab>
     </Tabs>
   </MuiThemeProvider>
 );

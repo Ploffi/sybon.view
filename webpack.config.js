@@ -11,8 +11,6 @@ module.exports = {
         path: __dirname + "/build"
     },
 
-    devtool: "source-map",
-
     devServer: {
         contentBase: './dist',
         hot: true

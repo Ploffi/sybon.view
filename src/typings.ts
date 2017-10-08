@@ -13,9 +13,13 @@ export interface IProblem {
 }
 
 export interface ICollection {    
-    Id: number;
+    Id: string;
     Name: string;
     Description: string;
     ProblemCount: number;
     Problems: IProblem[];
+}
+
+export interface ISelectableCollection extends ICollection {
+    isSelected?: boolean;
 }

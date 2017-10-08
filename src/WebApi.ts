@@ -6,6 +6,7 @@ const baseUrl = 'https://archive.sybon.org/api/';
 
 const defaultHeaders = {
     'Content-Type' : 'application/json',
+    'Accept': 'application/json',
 };
 
 const defaultOptions = {
@@ -15,35 +16,36 @@ const defaultOptions = {
 export default class WebApiClient {
     static Collections = {
         GetCollections: function(limit = 10, offset = 0): Promise<ICollection[]> {
-            return WebApiClient.get(`${baseUrl}/Collections?Limit=${limit}&Offset=${offset}&api_key=${api_key}`);
+            return WebApiClient.get(`Collections?Limit=${limit}&Offset=${offset}&api_key=${api_key}`);
         }, 
 
         GetCollection: function(id: number): Promise<ICollection> {
-            return WebApiClient.get(`${baseUrl}/Collections/${id}&api_key=${api_key}`);
+            return WebApiClient.get(`Collections/${id}&api_key=${api_key}`);
         },  
         
         PostCollection: function(collection: ICollection): Promise<any> {
-            return WebApiClient.post(`${baseUrl}/Collections?api_key=${api_key}`, collection);
+            return WebApiClient.post(`Collections?api_key=${api_key}`, collection);
         },
         
         SetProblemToCollection: function(collectionId: number, internalProblemId: number): Promise<number> {
             return WebApiClient
-                .post(`${baseUrl}/Collections/${collectionId}/problem?internalProblemId=${internalProblemId}&api_key=${api_key}`);
+                .post(`Collections/${collectionId}/problem?internalProblemId=${internalProblemId}&api_key=${api_key}`);
         }, 
     };
    
     static Problems = {
         GetProblem: function(id: number): Promise<IProblem> {
-            return WebApiClient.get(`${baseUrl}/Problems/${id}`);
+            return WebApiClient.get(`Problems/${id}`);
         }, 
 
         GetProblemStatement: function(id: number): Promise<string> {
-            return WebApiClient.get(`${baseUrl}/Problems/${id}/Statement`);
+            return WebApiClient.get(`Problems/${id}/Statement`);
         },         
     };
 
     static get(url) {
         return axios.get(`${baseUrl}/${url}`, defaultOptions)
+        .then(r => {console.log(r); return r; })
         .then(response => response.data)
         .catch(err => console.log(err));
     }

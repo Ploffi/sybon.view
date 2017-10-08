@@ -9,7 +9,6 @@
     "moduleResolution": "node",
     "forceConsistentCasingInFileNames": true,
     "noImplicitThis": true,
-    "strictNullChecks": true,
     "suppressImplicitAnyIndexErrors": true
   },
   "exclude": [

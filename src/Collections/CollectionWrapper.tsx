@@ -1,17 +1,12 @@
 import * as React from 'react';
-import {
-  Table,
-  TableBody,
-  TableFooter,
-  TableHeader,
-  TableHeaderColumn,
-  TableRow,
-  TableRowColumn,
-} from 'material-ui/Table';
-import TextField from 'material-ui/TextField';
-import Toggle from 'material-ui/Toggle';
+import WebApiClient from '../WebApi';
+import { ICollection, IProblem, ISelectableCollection } from '../typings';
+import CollectionTable from './CollectionTable';
+import CreateCollection from './CreateCollection';
+import RaisedButton from 'material-ui/RaisedButton';
 
-const mockData = require('./mockData.json');
+
+import { Toolbar, ToolbarGroup, ToolbarSeparator, ToolbarTitle } from 'material-ui/Toolbar';
 
 
 const styles = {
@@ -25,62 +20,91 @@ const styles = {
   },
 };
 
+interface ICollectionWrapperState {
+  collections: ISelectableCollection[];
+  isCreateModalOpen: boolean;
+}
 
-/**
- * A more complex example, allowing the table height to be set, and key boolean properties to be toggled.
- */
-export default class TableExampleComplex extends React.Component {
-  state = {
-    fixedHeader: true,
-    fixedFooter: true,
-    stripedRows: false,
-    showRowHover: false,
-    selectable: true,
-    multiSelectable: false,
-    enableSelectAll: false,
-    deselectOnClickaway: true,
-    showCheckboxes: true,
-    height: '300px',
-  };
+export default class CollectionWrapper extends React.Component<any, ICollectionWrapperState> {
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      collections: [],
+      isCreateModalOpen: false,
+    };
+  }
+
+  componentDidMount() {
+    WebApiClient.Collections.GetCollections()
+      .then(collections => this.setState({ collections: collections || [] }));
+  }
+
+  handleCreateCollection = (collection: ICollection) => {
+    this.setState(prevState => ({
+      collections: prevState.collections.concat(collection),
+      isCreateModalOpen: false,
+    }));
+  }
+
+  handleEditCollection = (collection: ICollection) => {
+    this.setState(prevState => ({
+      collections: prevState.collections.map(c => collection.Id === c.Id ? collection : c),
+      isCreateModalOpen: false,
+    }));
+  }
+
+  private toggleIsCreateModalOpen = () => this.setState(prevState => ({ isCreateModalOpen: !prevState.isCreateModalOpen }));
+
+  private handleCollectionSelected = (selectedCollections: number[]) => {
+    this.setState((prevState: ICollectionWrapperState) => ({
+      collections: prevState.collections.map((collection, index) => ({
+        ...collection,
+        isSelected: selectedCollections.indexOf(index) !== -1,
+      })),
+    }));
+  }
+
+  private removeSelectedCollections = () => {
+    this.setState((prevState: ICollectionWrapperState) => ({
+      collections: prevState.collections.filter(col => !col.isSelected),
+    }));
+  }
 
   render() {
+    let selectedCollection = this.state.collections.find(c => c.isSelected);
     return (
       <div>
-        <Table
-          fixedHeader={true}
-          selectable={true}
-          multiSelectable={true}
-          onRowSelection={(type) => console.log(type)}
-        >
-          <TableHeader
-            displaySelectAll={true}
-            enableSelectAll={true}
-          >
-            <TableRow>
-              <TableHeaderColumn colSpan={3} tooltip='Super Header' style={{textAlign: 'center'}}>
-                Super Header
-              </TableHeaderColumn>
-            </TableRow>
-            <TableRow>
-              <TableHeaderColumn tooltip='The ID'>ID</TableHeaderColumn>
-              <TableHeaderColumn tooltip='The Name'>Name</TableHeaderColumn>
-              <TableHeaderColumn tooltip='The Status'>Status</TableHeaderColumn>
-            </TableRow>
-          </TableHeader>
-          <TableBody
-            displayRowCheckbox={true}
-            deselectOnClickaway={false}
-            showRowHover={true}
-          >
-            {mockData.collections.map( (row, index) => (
-              <TableRow key={row.id}>
-                <TableRowColumn>{row.id}</TableRowColumn>
-                <TableRowColumn>{row.name}</TableRowColumn>
-                <TableRowColumn>{row.status}</TableRowColumn>
-              </TableRow>
-              ))}
-          </TableBody>
-        </Table>
+        <div className='collectionTableWrapper'>
+          <CollectionTable
+            onRowSelection={this.handleCollectionSelected}
+            collections={this.state.collections} />
+        </div>
+        <div>
+          <div className='collectionControlWrapper'>
+            <Toolbar>
+              <ToolbarGroup>
+                <div>
+                  <RaisedButton
+                    style={{ width: '108px', marginRight: '10px' }}
+                    primary
+                    onClick={this.toggleIsCreateModalOpen}
+                    label={selectedCollection ? 'Изменить' : 'Создать'} />
+                  <RaisedButton
+                    primary
+                    onClick={this.removeSelectedCollections}
+                    disabled={!selectedCollection}
+                    label={'Удалить'} />
+                  <CreateCollection
+                    onCreate={this.handleCreateCollection}
+                    onClose={this.toggleIsCreateModalOpen}
+                    isOpen={this.state.isCreateModalOpen}
+                    collection={selectedCollection} />
+                </div>
+              </ToolbarGroup>
+            </Toolbar>
+          </div>
+        </div>
       </div>
     );
   }
