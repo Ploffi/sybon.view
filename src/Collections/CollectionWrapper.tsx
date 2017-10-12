@@ -54,7 +54,12 @@ export default class CollectionWrapper extends React.Component<any, ICollectionW
     }));
   }
 
-  private toggleIsCreateModalOpen = () => this.setState(prevState => ({ isCreateModalOpen: !prevState.isCreateModalOpen }));
+  handleAddProblem = (collection: ICollection, internalProblemId: string) => {
+    return WebApiClient.Collections.SetProblemToCollection(collection.Id, internalProblemId);
+  }
+
+  private toggleIsCreateModalOpen = 
+    () => this.setState(prevState => ({ isCreateModalOpen: !prevState.isCreateModalOpen }))
 
   private handleCollectionSelected = (selectedCollections: number[]) => {
     this.setState((prevState: ICollectionWrapperState) => ({
@@ -96,8 +101,9 @@ export default class CollectionWrapper extends React.Component<any, ICollectionW
                     disabled={!selectedCollection}
                     label={'Удалить'} />
                   <CreateCollection
-                    onCreate={this.handleCreateCollection}
+                    onCreate={selectedCollection ? this.handleEditCollection : this.handleCreateCollection}
                     onClose={this.toggleIsCreateModalOpen}
+                    onAddProblem={this.handleAddProblem}
                     isOpen={this.state.isCreateModalOpen}
                     collection={selectedCollection} />
                 </div>

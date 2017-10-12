@@ -4,6 +4,7 @@ const webpack = require('webpack');
 
 module.exports = {
     entry:  [
+        "react-hot-loader/patch",
         "./src/index.tsx",
     ],
     output: {
@@ -31,10 +32,10 @@ module.exports = {
 
     module: {
         rules: [
-            // All files with a '.ts' or '.tsx' extension will be handled by 'awesome-typescript-loader'.
             { 
                 test: /\.tsx?$/, 
                 loaders: [
+                    'react-hot-loader/webpack',
                     "awesome-typescript-loader", 
                 ] 
             },

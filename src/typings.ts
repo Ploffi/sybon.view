@@ -1,5 +1,5 @@
 export interface IProblem {
-    Id: number;
+    Id: string;
     Name: string;
     StatementUrl: string;
     CollectionId: number;

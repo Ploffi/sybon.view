@@ -19,7 +19,7 @@ export default class WebApiClient {
             return WebApiClient.get(`Collections?Limit=${limit}&Offset=${offset}&api_key=${api_key}`);
         }, 
 
-        GetCollection: function(id: number): Promise<ICollection> {
+        GetCollection: function(id: string): Promise<ICollection> {
             return WebApiClient.get(`Collections/${id}&api_key=${api_key}`);
         },  
         
@@ -27,18 +27,18 @@ export default class WebApiClient {
             return WebApiClient.post(`Collections?api_key=${api_key}`, collection);
         },
         
-        SetProblemToCollection: function(collectionId: number, internalProblemId: number): Promise<number> {
+        SetProblemToCollection: function(collectionId: string, internalProblemId: string): Promise<any> {
             return WebApiClient
                 .post(`Collections/${collectionId}/problem?internalProblemId=${internalProblemId}&api_key=${api_key}`);
         }, 
     };
    
     static Problems = {
-        GetProblem: function(id: number): Promise<IProblem> {
+        GetProblem: function(id: string): Promise<IProblem> {
             return WebApiClient.get(`Problems/${id}`);
         }, 
 
-        GetProblemStatement: function(id: number): Promise<string> {
+        GetProblemStatement: function(id: string): Promise<string> {
             return WebApiClient.get(`Problems/${id}/Statement`);
         },         
     };

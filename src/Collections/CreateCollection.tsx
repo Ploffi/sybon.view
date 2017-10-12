@@ -8,10 +8,13 @@ import { ICollection } from '../typings';
 interface ICreateCollectionState {
     name: string;
     description: string;
+    internalProblemId: string;
+    internalProblemAddingResultText: string;
 }
 
 interface ICreateCollectionProps {
     onCreate: (collection: ICollection) => void;
+    onAddProblem: (collection: ICollection, internaProblemId: string) => Promise<any>;
     onClose: () => void;
     isOpen: boolean;
     collection: ICollection;
@@ -24,6 +27,8 @@ export default class CreateCollection extends React.Component<ICreateCollectionP
         this.state = {
             name: '',
             description: '',
+            internalProblemId: '',
+            internalProblemAddingResultText: null,
         };
     }
 
@@ -38,12 +43,19 @@ export default class CreateCollection extends React.Component<ICreateCollectionP
         } as ICollection);
     }
 
+    handleAddProblem = () => {
+        this.props.onAddProblem(
+            this.props.collection,
+            this.state.internalProblemId,
+        );
+    }
+
     componentWillReceiveProps(nextProps: ICreateCollectionProps) {
         let newState = nextProps.collection
             ? {
                 name: nextProps.collection.Name,
                 description: nextProps.collection.Description,
-            } 
+            }
             : {
                 name: '',
                 description: '',
@@ -62,13 +74,15 @@ export default class CreateCollection extends React.Component<ICreateCollectionP
             <Dialog title={actionName} open={this.props.isOpen}
                 actions={actions}
                 onRequestClose={this.props.onClose} >
-                <TextField
-                    name='name'
-                    value={this.state.name}
-                    onChange={this.onNameChanged}
-                    multiLine={false}
-                    hintText={this.state.name ? null : 'Имя коллекции'} />
-                <div style={{ display: 'block' }}>
+                <div>
+                    <TextField
+                        name='name'
+                        value={this.state.name}
+                        onChange={this.onNameChanged}
+                        hintText={this.state.name ? null : 'Имя коллекции'} />
+                </div>
+
+                <div>
                     <TextField
                         name='describe'
                         value={this.state.description}
@@ -78,6 +92,23 @@ export default class CreateCollection extends React.Component<ICreateCollectionP
                         rowsMax={4}
                         hintText={this.state.description ? null : 'Описание коллекции'} />
                 </div>
+                {
+                    this.props.collection
+                    &&
+                    <div>
+                        <TextField
+                            name='adding'
+                            value={this.state.internalProblemId}
+                            errorText={this.state.internalProblemAddingResultText}
+                            errorStyle={{color: '#0f0'}}
+                            onChange={this.onNameChanged}
+                            hintText={this.state.name ? null : 'Internal id задачи'} />
+
+                        <FlatButton
+                            label={'Добавить задачу1'}
+                            onClick={this.handleCreateButtonClick} />
+                    </div>
+                }
             </Dialog>
         );
     }
