@@ -8,20 +8,19 @@ import { AppContainer } from 'react-hot-loader';
 
 const rootEl = document.getElementById('root') as HTMLElement;
 
-function startUp() {
+function startUp(Component) {
   ReactDOM.render(
     <AppContainer>
-      <App />
+      <Component />
     </AppContainer>,
     rootEl
   );
 }
 
-startUp();
+startUp(App);
 
 if (module.hot) {
   module.hot.accept('./app/App', () => {
-    const NextApp = require('./app/App').default;
-    startUp();
+    startUp(App);
   });
 }

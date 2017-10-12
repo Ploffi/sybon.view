@@ -58,8 +58,9 @@ export default class CollectionWrapper extends React.Component<any, ICollectionW
     return WebApiClient.Collections.SetProblemToCollection(collection.Id, internalProblemId);
   }
 
-  private toggleIsCreateModalOpen = 
-    () => this.setState(prevState => ({ isCreateModalOpen: !prevState.isCreateModalOpen }))
+  private toggleIsCreateModalOpen = () => this.setState(
+    prevState => ({ isCreateModalOpen: !prevState.isCreateModalOpen })
+  )
 
   private handleCollectionSelected = (selectedCollections: number[]) => {
     this.setState((prevState: ICollectionWrapperState) => ({

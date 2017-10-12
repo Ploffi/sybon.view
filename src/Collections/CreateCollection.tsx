@@ -3,13 +3,21 @@ import TextField from 'material-ui/TextField';
 import FlatButton from 'material-ui/FlatButton';
 import Dialog from 'material-ui/Dialog';
 import { ICollection } from '../typings';
+import FloatingActionButton from 'material-ui/FloatingActionButton';
+import ContentAdd from 'material-ui/svg-icons/content/add';
 
+
+enum InternalProblemStatus {
+    None,
+    Success,
+    Fail,
+}
 
 interface ICreateCollectionState {
     name: string;
     description: string;
     internalProblemId: string;
-    internalProblemAddingResultText: string;
+    internalProblemStatus: InternalProblemStatus;
 }
 
 interface ICreateCollectionProps {
@@ -20,20 +28,40 @@ interface ICreateCollectionProps {
     collection: ICollection;
 }
 
+const addingProblemStyleBase = {
+    fontSize: '14px',
+};
+
+const successAddingProblemStyle = {
+    ...addingProblemStyleBase,
+    color: 'green',
+};
+
+const failAddingProblemStyle = {
+    ...addingProblemStyleBase,
+    color: 'red',
+};
+
+const defaultState = {
+    name: '',
+    description: '',
+    internalProblemId: '',
+    internalProblemStatus: InternalProblemStatus.None,
+};
+
 export default class CreateCollection extends React.Component<ICreateCollectionProps, ICreateCollectionState> {
 
     constructor(props) {
         super(props);
         this.state = {
-            name: '',
-            description: '',
-            internalProblemId: '',
-            internalProblemAddingResultText: null,
+          ...defaultState,
         };
     }
 
-    onNameChanged = (_, name) => this.setState({ name: name });
-    onDescriptionChanged = (_, description) => this.setState({ description: description });
+    onNameChange = (_, name) => this.setState({ name: name });
+    onDescriptionChange = (_, description) => this.setState({ description: description });
+    onInternalIdChange = (_, internalId) => this.setState({ internalProblemId: internalId });
+
     handleCreateButtonClick = () => {
         this.props.onCreate({
             Id: guid(),
@@ -47,29 +75,46 @@ export default class CreateCollection extends React.Component<ICreateCollectionP
         this.props.onAddProblem(
             this.props.collection,
             this.state.internalProblemId,
-        );
+        )
+            .then(_ => this.setState({ internalProblemStatus: InternalProblemStatus.Success }))
+            .catch(_ => this.setState({ internalProblemStatus: InternalProblemStatus.Fail }));
     }
 
     componentWillReceiveProps(nextProps: ICreateCollectionProps) {
-        let newState = nextProps.collection
-            ? {
-                name: nextProps.collection.Name,
-                description: nextProps.collection.Description,
-            }
-            : {
-                name: '',
-                description: '',
-            };
+        let newState = {
+            ...defaultState,
+        };
+        if (nextProps.collection) {
+            newState.name = nextProps.collection.Name,
+            newState.description = nextProps.collection.Description;
+        }
         this.setState(newState);
     }
 
+    getAddingProblemResultText(): string {
+        return this.state.internalProblemStatus === InternalProblemStatus.Fail
+            ? 'Не удалось добавить задачу'
+            : this.state.internalProblemStatus === InternalProblemStatus.Success
+                ? 'Задача успешно добавлена'
+                : null;
+    }
+
+    getAddingProblemResultStyle(): any {
+        return this.state.internalProblemStatus === InternalProblemStatus.Fail
+            ? failAddingProblemStyle
+            : this.state.internalProblemStatus === InternalProblemStatus.Success
+                ? successAddingProblemStyle
+                : {};
+    }
+
     render() {
-        const actionName = this.props.collection ? 'Изменить' : 'Создать';
+        let actionName = this.props.collection ? 'Изменить' : 'Создать';
         const actions = [
             <FlatButton
                 label={actionName}
                 onClick={this.handleCreateButtonClick} />,
         ];
+
         return (
             <Dialog title={actionName} open={this.props.isOpen}
                 actions={actions}
@@ -78,7 +123,7 @@ export default class CreateCollection extends React.Component<ICreateCollectionP
                     <TextField
                         name='name'
                         value={this.state.name}
-                        onChange={this.onNameChanged}
+                        onChange={this.onNameChange}
                         hintText={this.state.name ? null : 'Имя коллекции'} />
                 </div>
 
@@ -86,7 +131,7 @@ export default class CreateCollection extends React.Component<ICreateCollectionP
                     <TextField
                         name='describe'
                         value={this.state.description}
-                        onChange={this.onDescriptionChanged}
+                        onChange={this.onDescriptionChange}
                         multiLine={true}
                         fullWidth
                         rowsMax={4}
@@ -96,17 +141,23 @@ export default class CreateCollection extends React.Component<ICreateCollectionP
                     this.props.collection
                     &&
                     <div>
-                        <TextField
-                            name='adding'
-                            value={this.state.internalProblemId}
-                            errorText={this.state.internalProblemAddingResultText}
-                            errorStyle={{color: '#0f0'}}
-                            onChange={this.onNameChanged}
-                            hintText={this.state.name ? null : 'Internal id задачи'} />
+                        <div className='inlineMiddle'>
+                            <TextField
+                                name='adding'
+                                value={this.state.internalProblemId}
+                                errorStyle={this.getAddingProblemResultStyle()}
+                                errorText={this.getAddingProblemResultText()}
+                                onChange={this.onInternalIdChange}
+                                hintText={this.state.internalProblemId ? null : 'Internal id задачи'} />
+                        </div>
+                        <div className='inlineMiddle' >
+                            <FloatingActionButton
+                                mini
+                                onClick={this.handleAddProblem}>
+                                <ContentAdd />
+                            </FloatingActionButton>
+                        </div>
 
-                        <FlatButton
-                            label={'Добавить задачу1'}
-                            onClick={this.handleCreateButtonClick} />
                     </div>
                 }
             </Dialog>

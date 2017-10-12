@@ -41,7 +41,7 @@ export default class CollectionTable extends React.Component<ICollectionTablePro
             >
                 <TableHeader>
                     <TableRow>
-                        <TableHeaderColumn colSpan={3} tooltip='Фильтр по имени коллекции' style={{ textAlign: 'center' }}>
+                        <TableHeaderColumn colSpan={3} style={{ textAlign: 'center' }}>
                             <TextField onChange={this.handleFilterChange} hintText={filter === '' ? 'Имя коллекции' : ''} />
                         </TableHeaderColumn>
                     </TableRow>

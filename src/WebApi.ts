@@ -29,7 +29,7 @@ export default class WebApiClient {
         
         SetProblemToCollection: function(collectionId: string, internalProblemId: string): Promise<any> {
             return WebApiClient
-                .post(`Collections/${collectionId}/problem?internalProblemId=${internalProblemId}&api_key=${api_key}`);
+                .post(`Collections/${collectionId}/problems?internalProblemId=${internalProblemId}&api_key=${api_key}`);
         }, 
     };
    
@@ -47,14 +47,12 @@ export default class WebApiClient {
         return axios.get(`${baseUrl}/${url}`, defaultOptions)
         .then(r => {console.log(r); return r; })
         .then(response => response.data)
-        .catch(err => console.log(err));
+        .catch(err => console.log(err) || Promise.reject('oops'));
     }
 
     static post(url: string, data?: any) {
         return axios.post(`${baseUrl}/${url}`, data, defaultOptions)
         .then(response => response.data)
-        .catch(err => console.log(err));
+        .catch(err => console.log(err) || Promise.reject('oops'));
     }
-
-
 }
