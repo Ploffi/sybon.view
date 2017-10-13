@@ -105,7 +105,7 @@ export default class CreateCollection extends React.Component<ICreateCollectionP
                             hintText={this.state.name ? null : 'Internal id задачи'} />
 
                         <FlatButton
-                            label={'Добавить задачу1'}
+                            label={'Добавить задачу'}
                             onClick={this.handleCreateButtonClick} />
                     </div>
                 }

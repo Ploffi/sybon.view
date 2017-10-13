@@ -1,12 +1,14 @@
 import * as React from 'react';
 import WebApiClient from '../WebApi';
-import { ICollection, IProblem, ISelectableCollection } from '../typings';
+import { ICollection, IProblem } from '../typings';
 import CollectionTable from './CollectionTable';
 import CreateCollection from './CreateCollection';
 import RaisedButton from 'material-ui/RaisedButton';
 
 
 import { Toolbar, ToolbarGroup, ToolbarSeparator, ToolbarTitle } from 'material-ui/Toolbar';
+import ProblemTable from '../Problems/ProblemTable';
+import CollectionProblemsTableWrapper from './CollectionProblemsTableWrapper';
 
 
 const styles = {
@@ -21,7 +23,7 @@ const styles = {
 };
 
 interface ICollectionWrapperState {
-  collections: ISelectableCollection[];
+  collections: ICollection[];
   isCreateModalOpen: boolean;
 }
 
@@ -111,7 +113,14 @@ export default class CollectionWrapper extends React.Component<any, ICollectionW
             </Toolbar>
           </div>
         </div>
+        <div>
+          <div className='problemsTableWrapper'>
+            <CollectionProblemsTableWrapper collection={selectedCollection} /> 
+          </div>
+        </div>
       </div>
     );
   }
+
 }
+

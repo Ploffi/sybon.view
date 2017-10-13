@@ -1,4 +1,4 @@
-export interface IProblem {
+export interface IProblem extends ISelectable {
     Id: string;
     Name: string;
     StatementUrl: string;
@@ -12,7 +12,7 @@ export interface IProblem {
     };
 }
 
-export interface ICollection {    
+export interface ICollection extends ISelectable {    
     Id: string;
     Name: string;
     Description: string;
@@ -20,6 +20,6 @@ export interface ICollection {
     Problems: IProblem[];
 }
 
-export interface ISelectableCollection extends ICollection {
+export interface ISelectable {
     isSelected?: boolean;
 }
