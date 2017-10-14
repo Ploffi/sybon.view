@@ -157,7 +157,6 @@ export default class CreateCollection extends React.Component<ICreateCollectionP
                                 <ContentAdd />
                             </FloatingActionButton>
                         </div>
-
                     </div>
                 }
             </Dialog>

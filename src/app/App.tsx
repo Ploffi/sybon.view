@@ -11,7 +11,7 @@ const muiTheme = getMuiTheme({
     primary1Color: '#424242',
     primary2Color: '#1b1b1b',
     accent1Color: '#a5d6a7',
-    textColor: '#283593',
+    textColor: '#000',
     alternateTextColor: '#b2ebf2',
     secondaryTextColor: '#000000',
   },

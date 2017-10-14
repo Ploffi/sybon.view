@@ -9,10 +9,10 @@ import {
     TableRowColumn,
 } from 'material-ui/Table';
 import TextField from 'material-ui/TextField';
-import { ICollection, ISelectableCollection } from '../typings';
+import { ICollection } from '../typings';
 
 interface ICollectionTableProps {
-    collections: ISelectableCollection[];
+    collections: ICollection[];
     onRowSelection: (rows: number[]) => void;
 }
 
@@ -35,8 +35,6 @@ export default class CollectionTable extends React.Component<ICollectionTablePro
         let filter = this.state.filter || '';
         return (
             <Table
-                fixedHeader={true}
-                selectable={true}
                 onRowSelection={this.props.onRowSelection}
             >
                 <TableHeader>
@@ -52,9 +50,7 @@ export default class CollectionTable extends React.Component<ICollectionTablePro
                     </TableRow>
                 </TableHeader>
                 <TableBody
-                    displayRowCheckbox={true}
                     deselectOnClickaway={false}
-                    showRowHover={false}
                 >
                     {
                         this.props.collections &&
