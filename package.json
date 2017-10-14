@@ -8,7 +8,8 @@
   "dependencies": {
     "@types/react": "^16.0.9",
     "@types/react-dom": "^16.0.0",
-    "material-ui": "^0.19.2",
+    "material-ui-icons": "^1.0.0-beta.15",
+    "material-ui-next": "npm:material-ui@next",
     "react": "^16.0.0",
     "react-dom": "^16.0.0",
     "react-scripts-ts": "2.7.0"
@@ -16,7 +17,7 @@
   "devDependencies": {
     "@extern/tslint": "^1.0.2",
     "@types/jest": "^21.1.0",
-    "@types/material-ui": "^0.18.1",
+    "@types/material-ui": "^0.18.3",
     "@types/node": "^8.0.30",
     "@types/webpack-env": "^1.13.1",
     "awesome-typescript-loader": "^3.2.3",
@@ -24,6 +25,6 @@
     "css-loader": "^0.28.7",
     "react-hot-loader": "^3.0.0",
     "source-map-loader": "^0.2.1",
-    "typescript": "^2.5.2"
+    "typescript": "^2.5.3"
   }
 }

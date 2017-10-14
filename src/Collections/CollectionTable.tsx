@@ -1,19 +1,17 @@
 import * as React from 'react';
-import {
-    Table,
+import Table, {
     TableBody,
     TableFooter,
-    TableHeader,
-    TableHeaderColumn,
+    TableHead,
     TableRow,
-    TableRowColumn,
-} from 'material-ui/Table';
-import TextField from 'material-ui/TextField';
+    TableCell,
+} from 'material-ui-next/Table';
+import TextField from 'material-ui-next/TextField';
 import { ICollection } from '../typings';
 
 interface ICollectionTableProps {
     collections: ICollection[];
-    onRowSelection: (rows: number[]) => void;
+    onRowSelection: (id: ICollection['Id']) => void;
 }
 
 interface ICollectionTableState {
@@ -29,36 +27,34 @@ export default class CollectionTable extends React.Component<ICollectionTablePro
         };
     }
 
-    handleFilterChange = (_, f) => this.setState({ filter: f });
+    handleFilterChange = (event) => this.setState({ filter: event.target.value });
 
     render() {
         let filter = this.state.filter || '';
         return (
-            <Table
-                onRowSelection={this.props.onRowSelection}
-            >
-                <TableHeader>
+            <Table>
+                <TableHead>
                     <TableRow>
-                        <TableHeaderColumn colSpan={3} style={{ textAlign: 'center' }}>
-                            <TextField onChange={this.handleFilterChange} hintText={filter === '' ? 'Имя коллекции' : ''} />
-                        </TableHeaderColumn>
+                        <TableCell colSpan={3} style={{ textAlign: 'center' }}>
+                            <TextField onChange={this.handleFilterChange} placeholder='Имя коллекции' />
+                        </TableCell>
                     </TableRow>
                     <TableRow>
-                        <TableHeaderColumn> Name </TableHeaderColumn>
-                        <TableHeaderColumn> ProblemsCount </TableHeaderColumn>
-                        <TableHeaderColumn> Description </TableHeaderColumn>
+                        <TableCell> Name </TableCell>
+                        <TableCell> ProblemsCount </TableCell>
+                        <TableCell> Description </TableCell>
                     </TableRow>
-                </TableHeader>
-                <TableBody
-                    deselectOnClickaway={false}
-                >
+                </TableHead>
+                <TableBody style={{cursor: 'pointer'}}>
                     {
                         this.props.collections &&
                         this.props.collections.filter(c => c.Name.toLowerCase().startsWith(this.state.filter.toLowerCase())).map((collection, index) => (
-                            <TableRow selected={collection.isSelected} key={index}>
-                                <TableRowColumn>{collection.Name}</TableRowColumn>
-                                <TableRowColumn>{collection.ProblemCount}</TableRowColumn>
-                                <TableRowColumn>{collection.Description}</TableRowColumn>
+                            <TableRow
+                                onClick={() => this.props.onRowSelection(collection.Id)}
+                                selected={collection.isSelected} key={index}>
+                                <TableCell>{collection.Name}</TableCell>
+                                <TableCell>{collection.ProblemCount}</TableCell>
+                                <TableCell>{collection.Description}</TableCell>
                             </TableRow>
                         ))
                     }

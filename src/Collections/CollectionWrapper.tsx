@@ -3,10 +3,11 @@ import WebApiClient from '../WebApi';
 import { ICollection, IProblem } from '../typings';
 import CollectionTable from './CollectionTable';
 import CreateCollection from './CreateCollection';
-import RaisedButton from 'material-ui/RaisedButton';
+import Button from 'material-ui-next/Button';
+import Paper from 'material-ui-next/Paper';
 
 
-import { Toolbar, ToolbarGroup, ToolbarSeparator, ToolbarTitle } from 'material-ui/Toolbar';
+import Toolbar from 'material-ui-next/Toolbar';
 import ProblemTable from '../Problems/ProblemTable';
 import CollectionProblemsTableWrapper from './CollectionProblemsTableWrapper';
 
@@ -64,11 +65,11 @@ export default class CollectionWrapper extends React.Component<any, ICollectionW
     prevState => ({ isCreateModalOpen: !prevState.isCreateModalOpen })
   )
 
-  private handleCollectionSelected = (selectedCollections: number[]) => {
+  private handleCollectionSelected = (selectedId: ICollection['Id']) => {
     this.setState((prevState: ICollectionWrapperState) => ({
       collections: prevState.collections.map((collection, index) => ({
         ...collection,
-        isSelected: selectedCollections.indexOf(index) !== -1,
+        isSelected: selectedId === collection.Id && !collection.isSelected,
       })),
     }));
   }
@@ -83,26 +84,30 @@ export default class CollectionWrapper extends React.Component<any, ICollectionW
     let selectedCollection = this.state.collections.find(c => c.isSelected);
     return (
       <div>
-        <div className='collectionTableWrapper'>
-          <CollectionTable
-            onRowSelection={this.handleCollectionSelected}
-            collections={this.state.collections} />
-        </div>
-        <div>
-          <div className='collectionControlWrapper'>
-            <Toolbar>
-              <ToolbarGroup>
+        <div style={{ marginBottom: 20}}>
+          <div className='collectionTableWrapper'>
+            <CollectionTable
+              onRowSelection={this.handleCollectionSelected}
+              collections={this.state.collections} />
+          </div>
+          <Paper>
+            <div className='collectionControlWrapper'>
+              <Toolbar>
                 <div>
-                  <RaisedButton
+                  <Button
+                    raised
                     style={{ width: '108px', marginRight: '10px' }}
-                    primary
-                    onClick={this.toggleIsCreateModalOpen}
-                    label={selectedCollection ? 'Изменить' : 'Создать'} />
-                  <RaisedButton
-                    primary
+                    color='primary'
+                    onClick={this.toggleIsCreateModalOpen}>
+                    {selectedCollection ? 'Изменить' : 'Создать'}
+                  </Button>
+                  <Button
+                    raised
+                    color='primary'
                     onClick={this.removeSelectedCollections}
-                    disabled={!selectedCollection}
-                    label={'Удалить'} />
+                    disabled={!selectedCollection}>
+                    Удалить
+                </Button>
                   <CreateCollection
                     onCreate={selectedCollection ? this.handleEditCollection : this.handleCreateCollection}
                     onClose={this.toggleIsCreateModalOpen}
@@ -110,15 +115,15 @@ export default class CollectionWrapper extends React.Component<any, ICollectionW
                     isOpen={this.state.isCreateModalOpen}
                     collection={selectedCollection} />
                 </div>
-              </ToolbarGroup>
-            </Toolbar>
-          </div>
+              </Toolbar>
+            </div>
+          </Paper>
         </div>
-        <div>
+        <Paper>
           <div className='problemsTableWrapper'>
-            <CollectionProblemsTableWrapper collection={selectedCollection} /> 
+            <CollectionProblemsTableWrapper collection={selectedCollection} />
           </div>
-        </div>
+        </Paper>
       </div>
     );
   }
