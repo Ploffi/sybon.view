@@ -2,7 +2,7 @@ import * as React from 'react';
 import { MuiThemeProvider, createMuiTheme } from 'material-ui-next/styles';
 import Tabs from 'material-ui-next/Tabs';
 import Tab from 'material-ui-next/Tabs/Tab';
-import CollectionWrapper from './../Collections/CollectionWrapper';
+import CollectionController from './../Collections/CollectionController';
 import FullWidthTabs from './FullWidthTabs';
 import AppBar from 'material-ui-next/AppBar';
 
@@ -20,6 +20,13 @@ const muiTheme = createMuiTheme({
     secondary: amber,
     error: red,
     grey: grey,
+  },
+  overrides: {
+    MuiTableRow: {
+      selected: {
+        background: '#e4e4e4',
+      },
+    },
   },
 });
 
@@ -45,7 +52,7 @@ class App extends React.Component<any, any> {
             <FullWidthTabs labels={labels} onTabChange={this.handleTabChange} />
           </AppBar>
 
-          {this.state.selectedTab === 0 && <CollectionWrapper />}
+          {this.state.selectedTab === 0 && <CollectionController />}
           {this.state.selectedTab === 1 && 'Задачи'}
         </div>
       </MuiThemeProvider>

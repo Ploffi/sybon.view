@@ -1,23 +1,24 @@
 export interface IProblem extends ISelectable {
-    Id: string;
-    Name: string;
-    StatementUrl: string;
-    CollectionId: number;
-    TestsCount: number;
-    PretestsCount: number;
-    InternalProblemId: string;
-    ResourceLimits: {
-      TimeLimitMillis: number,
-      MemoryLimitBytes: number
+    id: string;
+    name: string;
+    statementUrl: string;
+    collectionId: string;
+    testsCount: number;
+    pretests: any[];
+    internalProblemId: string;
+    resourceLimits: {
+      timeLimitMillis: number,
+      memoryLimitBytes: number
     };
 }
 
 export interface ICollection extends ISelectable {    
-    Id: string;
-    Name: string;
-    Description: string;
-    ProblemCount: number;
-    Problems: IProblem[];
+    id: string;
+    name: string;
+    description: string;
+    problemsCount: number;
+    problems: IProblem[]; //Сейчас с сервера на запрос по всем коллекциям приходит пустое поле, 
+                          //чтобы подтащить задачи нужно запросить информацию о конкретной коллекции по id
 }
 
 export interface ISelectable {

@@ -25,8 +25,7 @@ interface ICreateCollectionState {
 }
 
 interface ICreateCollectionProps {
-    onCreate: (collection: ICollection) => void;
-    onAddProblem: (collection: ICollection, internaProblemId: string) => Promise<any>;
+    onCreate: (collection: ICollection) => Promise<any>;
     onClose: () => void;
     isOpen: boolean;
     collection: ICollection;
@@ -50,24 +49,16 @@ export default class CreateCollection extends React.Component<ICreateCollectionP
 
     onNameChange = (e) => this.setState({ name: e.target.value });
     onDescriptionChange = (e) => this.setState({ description: e.target.value });
-    onInternalIdChange = (e) => this.setState({ internalProblemId: e.target.value });
 
     handleCreateButtonClick = () => {
         this.props.onCreate({
-            Id: guid(),
+            id: guid(),
             ...this.props.collection,
-            Name: this.state.name,
-            Description: this.state.description,
-        } as ICollection);
-    }
-
-    handleAddProblem = () => {
-        this.props.onAddProblem(
-            this.props.collection,
-            this.state.internalProblemId,
-        )
-            .then(_ => this.setState({ internalProblemStatus: InternalProblemStatus.Success }))
-            .catch(_ => this.setState({ internalProblemStatus: InternalProblemStatus.Fail }));
+            name: this.state.name,
+            description: this.state.description,
+            problems: [],
+        } as ICollection)
+            .catch();
     }
 
     componentWillReceiveProps(nextProps: ICreateCollectionProps) {
@@ -75,8 +66,8 @@ export default class CreateCollection extends React.Component<ICreateCollectionP
             ...defaultState,
         };
         if (nextProps.collection) {
-            newState.name = nextProps.collection.Name,
-                newState.description = nextProps.collection.Description;
+            newState.name = nextProps.collection.name,
+                newState.description = nextProps.collection.description;
         }
         this.setState(newState);
     }
@@ -99,16 +90,12 @@ export default class CreateCollection extends React.Component<ICreateCollectionP
 
     render() {
         let actionName = this.props.collection ? 'Изменить коллекцию' : 'Создать коллекцию';
-        const actions = [
-            ,
-        ];
-
         return (
             <Dialog
                 fullWidth
                 maxWidth='md'
                 open={this.props.isOpen}
-                onRequestClose={this.props.onClose} >
+                onClose={this.props.onClose} >
 
                 <DialogTitle>{actionName}</DialogTitle>
                 <DialogContent>
@@ -130,27 +117,6 @@ export default class CreateCollection extends React.Component<ICreateCollectionP
                             rowsMax={4}
                             placeholder='Описание коллекции' />
                     </div>
-                    {
-                        this.props.collection
-                        &&
-                        <div>
-                            <div className='inlineMiddle'>
-                                <TextField
-                                    name='adding'
-                                    value={this.state.internalProblemId}
-                                    helperTextClassName={this.getAddingProblemResultClassName()}
-                                    helperText={this.getAddingProblemResultText()}
-                                    error={this.state.internalProblemStatus === InternalProblemStatus.Fail}
-                                    onChange={this.onInternalIdChange}
-                                    placeholder='Internal id задачи' />
-                            </div>
-                            <div className='inlineMiddle' >
-                                <IconButton onClick={this.handleAddProblem}>
-                                    <i style={{fontSize: 36}} className='material-icons'>add_circle</i>
-                                </IconButton>
-                            </div>
-                        </div>
-                    }
                 </DialogContent>
                 <DialogActions>
                     <Button onClick={this.handleCreateButtonClick}>

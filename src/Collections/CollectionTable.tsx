@@ -1,17 +1,15 @@
 import * as React from 'react';
-import Table, {
-    TableBody,
-    TableFooter,
-    TableHead,
-    TableRow,
-    TableCell,
-} from 'material-ui-next/Table';
+import Table from 'material-ui-next/Table';
+import TableRow from 'material-ui-next/Table/TableRow';
+import TableCell from 'material-ui-next/Table/TableCell';
+import TableBody from 'material-ui-next/Table/TableBody';
+import TableHead from 'material-ui-next/Table/TableHead';
 import TextField from 'material-ui-next/TextField';
 import { ICollection } from '../typings';
 
 interface ICollectionTableProps {
     collections: ICollection[];
-    onRowSelection: (id: ICollection['Id']) => void;
+    onRowSelection: (id: ICollection['id']) => void;
 }
 
 interface ICollectionTableState {
@@ -30,7 +28,7 @@ export default class CollectionTable extends React.Component<ICollectionTablePro
     handleFilterChange = (event) => this.setState({ filter: event.target.value });
 
     render() {
-        let filter = this.state.filter || '';
+        let filter = (this.state.filter || '').toLowerCase();
         return (
             <Table>
                 <TableHead>
@@ -45,18 +43,20 @@ export default class CollectionTable extends React.Component<ICollectionTablePro
                         <TableCell> Description </TableCell>
                     </TableRow>
                 </TableHead>
-                <TableBody style={{cursor: 'pointer'}}>
+                <TableBody style={{ cursor: 'pointer' }}>
                     {
                         this.props.collections &&
-                        this.props.collections.filter(c => c.Name.toLowerCase().startsWith(this.state.filter.toLowerCase())).map((collection, index) => (
-                            <TableRow
-                                onClick={() => this.props.onRowSelection(collection.Id)}
-                                selected={collection.isSelected} key={index}>
-                                <TableCell>{collection.Name}</TableCell>
-                                <TableCell>{collection.ProblemCount}</TableCell>
-                                <TableCell>{collection.Description}</TableCell>
-                            </TableRow>
-                        ))
+                        this.props.collections.filter(сollection => сollection.name.toLowerCase().startsWith(filter))
+                            .map((collection, index) => (
+                                <TableRow
+                                    onClick={() => this.props.onRowSelection(collection.id)}
+                                    hover={true}
+                                    selected={collection.isSelected} key={index}>
+                                    <TableCell>{collection.name}</TableCell>
+                                    <TableCell>{collection.problemsCount}</TableCell>
+                                    <TableCell>{collection.description}</TableCell>
+                                </TableRow>
+                            ))
                     }
                 </TableBody>
             </Table>

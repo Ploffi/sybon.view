@@ -1,6 +1,7 @@
 import * as  React from 'react';
 import {withStyles} from 'material-ui-next/styles';
-import Tabs, { Tab } from 'material-ui-next/Tabs';
+import Tabs from 'material-ui-next/Tabs';
+import Tab from 'material-ui-next/Tabs/Tab';
 
 const styles = theme => ({
   root: {
