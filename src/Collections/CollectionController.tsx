@@ -3,11 +3,11 @@ import WebApiClient from '../WebApi';
 import { ICollection, IProblem } from '../typings';
 import CollectionTable from './CollectionTable';
 import CreateCollection from './CreateCollection';
-import Button from 'material-ui-next/Button';
-import Paper from 'material-ui-next/Paper';
+import Button from 'material-ui/Button';
+import Paper from 'material-ui/Paper';
 
 
-import Toolbar from 'material-ui-next/Toolbar';
+import Toolbar from 'material-ui/Toolbar';
 import ProblemTable from '../Problems/ProblemTable';
 import ProblemsTableController from '../Problems/ProblemsTableController';
 import AddProblem from './AddProblem';

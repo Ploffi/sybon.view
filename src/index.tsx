@@ -1,3 +1,7 @@
+import SvgIcon from 'material-ui/SvgIcon';
+(global as any).__MUI_SvgIcon__ = SvgIcon;
+
+
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import App from './app/App';
@@ -13,5 +17,6 @@ function startUp(Component) {
     rootEl
   );
 }
+
 
 startUp(App);

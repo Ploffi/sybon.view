@@ -1,15 +1,15 @@
 import * as React from 'react';
-import { MuiThemeProvider, createMuiTheme } from 'material-ui-next/styles';
-import Tabs from 'material-ui-next/Tabs';
-import Tab from 'material-ui-next/Tabs/Tab';
+import { MuiThemeProvider, createMuiTheme } from 'material-ui/styles';
+import Tabs from 'material-ui/Tabs';
+import Tab from 'material-ui/Tabs/Tab';
 import CollectionController from './../Collections/CollectionController';
 import FullWidthTabs from './FullWidthTabs';
-import AppBar from 'material-ui-next/AppBar';
+import AppBar from 'material-ui/AppBar';
 
-import blueGrey from 'material-ui-next/colors/blueGrey';
-import amber from 'material-ui-next/colors/amber';
-import red from 'material-ui-next/colors/red';
-import grey from 'material-ui-next/colors/grey';
+import blueGrey from 'material-ui/colors/blueGrey';
+import amber from 'material-ui/colors/amber';
+import red from 'material-ui/colors/red';
+import grey from 'material-ui/colors/grey';
 
 const muiTheme = createMuiTheme({
   typography: {
@@ -59,5 +59,5 @@ class App extends React.Component<any, any> {
     );
   }
 }
-// <CollectionWrapper />
+
 export default App;

@@ -1,10 +1,10 @@
 import * as React from 'react';
-import Table from 'material-ui-next/Table';
-import TableRow from 'material-ui-next/Table/TableRow';
-import TableCell from 'material-ui-next/Table/TableCell';
-import TableBody from 'material-ui-next/Table/TableBody';
-import TableHead from 'material-ui-next/Table/TableHead';
-import TextField from 'material-ui-next/TextField';
+import Table from 'material-ui/Table';
+import TableRow from 'material-ui/Table/TableRow';
+import TableCell from 'material-ui/Table/TableCell';
+import TableBody from 'material-ui/Table/TableBody';
+import TableHead from 'material-ui/Table/TableHead';
+import TextField from 'material-ui/TextField';
 import { ICollection } from '../typings';
 
 interface ICollectionTableProps {
@@ -34,7 +34,7 @@ export default class CollectionTable extends React.Component<ICollectionTablePro
                 <TableHead>
                     <TableRow>
                         <TableCell colSpan={3} style={{ textAlign: 'center' }}>
-                            <TextField onChange={this.handleFilterChange} placeholder='Имя коллекции' />
+                            <TextField onChange={this.handleFilterChange} placeholder='Фильтр по имени коллекци11и' />
                         </TableCell>
                     </TableRow>
                     <TableRow>

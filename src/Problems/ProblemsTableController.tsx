@@ -3,10 +3,10 @@ import { ICollection, IProblem } from '../typings';
 import WebApiClient from '../WebApi';
 import ProblemTable from './../Problems/ProblemTable';
 
-import { CircularProgress } from 'material-ui-next/Progress';
-import Button from 'material-ui-next/Button';
-import Toolbar from 'material-ui-next/Toolbar';
-import Paper from 'material-ui-next/Paper';
+import { CircularProgress } from 'material-ui/Progress';
+import Button from 'material-ui/Button';
+import Toolbar from 'material-ui/Toolbar';
+import Paper from 'material-ui/Paper';
 
 interface IProblemsTableControllerProps {
     collection: ICollection;

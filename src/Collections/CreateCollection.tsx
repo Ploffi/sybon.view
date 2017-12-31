@@ -1,14 +1,14 @@
 import * as React from 'react';
-import TextField from 'material-ui-next/TextField';
-import Button from 'material-ui-next/Button';
+import TextField from 'material-ui/TextField';
+import Button from 'material-ui/Button';
 import Dialog, {
     DialogActions,
     DialogContent,
     DialogContentText,
     DialogTitle,
-} from 'material-ui-next/Dialog';
+} from 'material-ui/Dialog';
 import { ICollection } from '../typings';
-import IconButton from 'material-ui-next/IconButton';
+import IconButton from 'material-ui/IconButton';
 
 
 enum InternalProblemStatus {
