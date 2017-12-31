@@ -17,7 +17,7 @@ axios.defaults.withCredentials = true;
 export default class WebApiClient {
     static Collections = {
         GetCollections: function (limit = 10, offset = 0): Promise<ICollection[]> {
-            return WebApiClient.get('Collections', { limit, offset });
+            return WebApiClient.get('Collections', { limit, offset: offset + 1 });
         },
 
         GetCollectionById: function (id: string): Promise<ICollection> {

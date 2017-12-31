@@ -34,7 +34,7 @@ export default class CollectionTable extends React.Component<ICollectionTablePro
                 <TableHead>
                     <TableRow>
                         <TableCell colSpan={3} style={{ textAlign: 'center' }}>
-                            <TextField onChange={this.handleFilterChange} placeholder='Фильтр по имени коллекци11и' />
+                            <TextField onChange={this.handleFilterChange} placeholder='Фильтр по имени' />
                         </TableCell>
                     </TableRow>
                     <TableRow>

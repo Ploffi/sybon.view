@@ -1,22 +1,33 @@
 import SvgIcon from 'material-ui/SvgIcon';
 (global as any).__MUI_SvgIcon__ = SvgIcon;
 
-
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
+import { AppContainer } from 'react-hot-loader';
+
 import App from './app/App';
 
 import './index.css';
 
 
-const rootEl = document.getElementById('root') as HTMLElement;
+const container = document.getElementById('root');
 
-function startUp(Component) {
+const render = Component => {
   ReactDOM.render(
-      <Component />,
-    rootEl
+    <AppContainer>
+      <Component />
+    </AppContainer>,
+    container
   );
 }
 
+render(App);
 
-startUp(App);
+if (module.hot) {
+  module.hot.accept('./app/App', () => {
+    const NextApp = require('./app/App').default;
+    render(
+      NextApp
+    );
+  });
+}
