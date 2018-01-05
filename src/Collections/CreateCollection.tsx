@@ -101,6 +101,7 @@ export default class CreateCollection extends React.Component<ICreateCollectionP
                 <DialogContent>
                     <div>
                         <TextField
+                            autoFocus
                             name='name'
                             value={this.state.name}
                             onChange={this.onNameChange}

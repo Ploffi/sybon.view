@@ -2,14 +2,16 @@ import * as React from 'react';
 import { MuiThemeProvider, createMuiTheme } from 'material-ui/styles';
 import Tabs from 'material-ui/Tabs';
 import Tab from 'material-ui/Tabs/Tab';
-import CollectionController from './../Collections/CollectionController';
-import FullWidthTabs from './FullWidthTabs';
 import AppBar from 'material-ui/AppBar';
 
 import blueGrey from 'material-ui/colors/blueGrey';
 import amber from 'material-ui/colors/amber';
 import red from 'material-ui/colors/red';
 import grey from 'material-ui/colors/grey';
+
+import CollectionController from './../Collections/CollectionController';
+import FullWidthTabs from '../Common/FullWidthTabs';
+import Auth from '../Common/Auth';
 
 const muiTheme = createMuiTheme({
   typography: {
@@ -45,7 +47,7 @@ class App extends React.Component<any, any> {
   }
 
   render() {
-    return (
+    return <Auth>
       <MuiThemeProvider theme={muiTheme}>
         <div>
           <AppBar position='static' color='primary'>
@@ -56,7 +58,7 @@ class App extends React.Component<any, any> {
           {this.state.selectedTab === 1 && 'Задачи'}
         </div>
       </MuiThemeProvider>
-    );
+    </Auth>;
   }
 }
 

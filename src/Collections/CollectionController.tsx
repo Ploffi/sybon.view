@@ -1,5 +1,5 @@
 import * as React from 'react';
-import WebApiClient from '../WebApi';
+import  { ArchiveClient } from '../WebApi';
 import { ICollection, IProblem } from '../typings';
 import CollectionTable from './CollectionTable';
 import CreateCollection from './CreateCollection';
@@ -14,11 +14,14 @@ import AddProblem from './AddProblem';
 import IconButton from 'material-ui/IconButton/IconButton';
 
 import Update from 'material-ui-icons/Update';
+import ConfirmDialog from '../Common/ConfirmDialog';
 
 
 interface ICollectionControllerState {
   collections: ICollection[];
+  collectionIdToDelete: ICollection['id'];
   isCreateModalOpen: boolean;
+  iConfirmDeleteModalOpen: boolean;
   isAddProblemModalOpen: boolean;
 }
 
@@ -30,13 +33,16 @@ export default class CollectionController extends React.Component<any, ICollecti
       collections: [],
       isCreateModalOpen: false,
       isAddProblemModalOpen: false,
+      iConfirmDeleteModalOpen: false,
+      collectionIdToDelete: null,
     };
   }
 
-  private fetchCollections = () => {
-    WebApiClient.Collections.GetCollections()
+  private fetchCollections = (newState = {}) => {
+    ArchiveClient.Collections.GetCollections()
       .then(collections => this.setState({
-        collections: (collections && collections.slice(1)) || [],
+        ...newState,
+        collections: collections || [],
       })
       );
   }
@@ -46,23 +52,16 @@ export default class CollectionController extends React.Component<any, ICollecti
   }
 
   private handleCreateCollection = (collection: ICollection) => {
-    return WebApiClient.Collections.PostCollection(collection)
+    return ArchiveClient.Collections.PostCollection(collection)
       .then((id) => {
-        collection.id = id;
-        this.setState(prevState => ({
-          collections: prevState.collections.concat(collection),
-          isCreateModalOpen: false,
-        }));
+        this.fetchCollections({ isCreateModalOpen: false, })
       });
   }
 
   private handleEditCollection = (collection: ICollection) => {
-    return WebApiClient.Collections.PostCollection(collection)
+    return ArchiveClient.Collections.PostCollection(collection)
       .then(() => {
-        this.setState(prevState => ({
-          collections: prevState.collections.map(c => collection.id === c.id ? collection : c),
-          isCreateModalOpen: false,
-        }));
+        this.fetchCollections({ isCreateModalOpen: false, })
       });
   }
 
@@ -83,21 +82,19 @@ export default class CollectionController extends React.Component<any, ICollecti
     }));
   }
 
-
-  private removeSelectedCollections = () => {
-    let selectedColIndex = this.state.collections.findIndex(col => col.isSelected);
-    let selectedColId = this.state.collections[selectedColIndex].id;
-    WebApiClient.Collections.RemoveCollectionById(selectedColId)
+  private removeCollection = () => {
+    ArchiveClient.Collections.RemoveCollectionById(this.state.collectionIdToDelete)
       .then(() => {
-        this.setState((prevState: ICollectionControllerState) => ({
-          collections: prevState.collections.splice(selectedColIndex, 1),
-        }));
+        this.fetchCollections({ iConfirmDeleteModalOpen: false, collectionIdToDelete: null })
       });
   }
 
-  handleAddProblems = (problemIds: string[]) => {
+  private toggleConfirmDeleteDialog = (id: ICollection['id'] = null) =>
+    this.setState(prevState => ({ iConfirmDeleteModalOpen: !prevState.iConfirmDeleteModalOpen, collectionIdToDelete: id }));
+
+  private handleAddProblems = (problemIds: string[]) => {
     let selectedCollection = this.state.collections.find(c => c.isSelected);
-    problemIds.forEach(id => WebApiClient.Collections.SetProblemToCollection(selectedCollection.id, id));
+    problemIds.forEach(id => ArchiveClient.Collections.SetProblemToCollection(selectedCollection.id, id));
     this.setState({
       isAddProblemModalOpen: false,
     });
@@ -111,7 +108,8 @@ export default class CollectionController extends React.Component<any, ICollecti
           <div className='collectionTableWrapper'>
             <CollectionTable
               onRowSelection={this.handleCollectionSelected}
-              collections={this.state.collections} />
+              collections={this.state.collections}
+              onDelete={this.toggleConfirmDeleteDialog} />
           </div>
           <Paper>
             <div className='collectionControlWrapper'>
@@ -119,27 +117,20 @@ export default class CollectionController extends React.Component<any, ICollecti
                 <div>
                   <Button
                     raised
-                    style={{ width: '108px', marginRight: '10px' }}
+                    className='marginRight'
                     color='primary'
                     onClick={this.toggleIsCreateModalOpen}>
                     {selectedCollection ? 'Изменить' : 'Создать'}
                   </Button>
                   <Button
                     raised
-                    style={{ marginRight: '10px' }}
+                    className='marginRight'
                     color='primary'
                     onClick={this.toggleisAddProblemModalOpen}
                     disabled={!selectedCollection}>
                     Добавить задачу
                   </Button>
-                  <Button
-                    raised
-                    color='primary'
-                    onClick={this.removeSelectedCollections}
-                    disabled={!selectedCollection}>
-                    Удалить
-                  </Button>
-                  <IconButton style={{verticalAlign: 'middle'}} color='primary' onClick={this.fetchCollections} >
+                  <IconButton style={{ verticalAlign: 'middle' }} color='primary' onClick={this.fetchCollections} >
                     <Update />
                   </IconButton>
                   <CreateCollection
@@ -156,7 +147,15 @@ export default class CollectionController extends React.Component<any, ICollecti
                       addProblems={this.handleAddProblems}
                     />
                   }
-
+                  <ConfirmDialog
+                    agreeCaption='Удалить'
+                    disagreeCaption='Оставить'
+                    content='Удаление коллекции невозможно отменить. Вы точно хотите сделать это?'
+                    isOpen={this.state.iConfirmDeleteModalOpen}
+                    title='Удаление коллекции'
+                    onAgree={this.removeCollection}
+                    onDisagree={this.toggleConfirmDeleteDialog}
+                  />
                 </div>
               </Toolbar>
             </div>
@@ -172,4 +171,3 @@ export default class CollectionController extends React.Component<any, ICollecti
     );
   }
 }
-

@@ -13,7 +13,7 @@ export interface IProblem extends ISelectable {
 }
 
 export interface ICollection extends ISelectable {    
-    id: string;
+    id: number;
     name: string;
     description: string;
     problemsCount: number;
@@ -23,4 +23,10 @@ export interface ICollection extends ISelectable {
 
 export interface ISelectable {
     isSelected?: boolean;
+}
+
+export interface AuthResult {
+    userId: string;
+    key: string;
+    expiresIn: number;
 }

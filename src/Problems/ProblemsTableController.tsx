@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { ICollection, IProblem } from '../typings';
-import WebApiClient from '../WebApi';
+import  { ArchiveClient } from '../WebApi';
 import ProblemTable from './../Problems/ProblemTable';
 
 import { CircularProgress } from 'material-ui/Progress';
@@ -43,7 +43,7 @@ class ProblemsTableController extends React.Component<IProblemsTableControllerPr
         this.setState({
             loading: true,
         });
-        WebApiClient.Collections.RemoveProblemFromCollection(this.props.collection.id, deletedProblemsIds)
+        ArchiveClient.Collections.RemoveProblemFromCollection(this.props.collection.id, deletedProblemsIds)
             .then(() => {
                 this.setState((prevState: IProblemsTableControllerState) => ({
                     problems: prevState.problems.filter(p => !p.isSelected),
@@ -64,7 +64,7 @@ class ProblemsTableController extends React.Component<IProblemsTableControllerPr
                 loading: true,
                 error: false,
             });
-            WebApiClient.Collections.GetCollectionById(nextProps.collection.id)
+            ArchiveClient.Collections.GetCollectionById(nextProps.collection.id)
                 .then(col => this.setState({ problems: col.problems, loading: false }))
                 .catch(e => this.setState({ error: true, loading: false }));
         }

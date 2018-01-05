@@ -15,7 +15,7 @@ import CloseIcon from 'material-ui-icons/Close';
 import Button from 'material-ui/Button/';
 
 import ProblemTable from '../Problems/ProblemTable';
-import WebApiClient from '../WebApi';
+import  { ArchiveClient } from '../WebApi';
 
 
 const globalCollectionId = 1;
@@ -50,7 +50,7 @@ class AddProblem extends React.Component<IAddProblemProps, IAddProblemState> {
 
 
   fetchAvaliableProblems(collectionId) {
-      return WebApiClient.Collections.GetCollectionById(collectionId)
+      return ArchiveClient.Collections.GetCollectionById(collectionId)
         .then(data => data.problems);
   }
 
@@ -113,7 +113,7 @@ class AddProblem extends React.Component<IAddProblemProps, IAddProblemState> {
           <ProblemTable onRowSelection={this.handleProblemSelected} 
             problems={
               this.state.avaliableProblems
-                .filter(problem => !this.state.existingProblems.some(p => p.id === problem.id)) } />
+                .filter(problem => !this.state.existingProblems.some(p => p.internalProblemId === problem.internalProblemId)) } />
         </Dialog>
       </div>
     );

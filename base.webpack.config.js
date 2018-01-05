@@ -17,6 +17,7 @@ var plugins = [
 ];
 
 module.exports = {
+    context: path.resolve(__dirname),
     entry: {
         vendor: ['react', 'react-dom', 'material-ui'],
         app: ["./src/index.tsx"],

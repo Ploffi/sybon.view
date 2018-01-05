@@ -1,7 +1,14 @@
-body{
+body {
   margin: 0;
   padding: 0;
   font-family: sans-serif;
+}
+
+#root {
+  margin: 0 auto;
+  width: 70%;
+  background-color: white;
+  box-shadow: 0px 0px 35px 36px ghostwhite;
 }
 
 .inlineMiddle{
@@ -26,4 +33,12 @@ body{
 
 .successAddingProblemStyle, .failAddingProblemStyle {
   font-size: 14px !important;
+}
+
+.marginRight {
+  margin-right: 10px !important;
+}
+
+.AuthDialog {
+  height: inherit !important;
 }
