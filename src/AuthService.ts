@@ -21,7 +21,7 @@ const getFromCookies = (paramName: string) =>
     .find(value => value.startsWith(paramName)) || "")
     .substring(1 + paramName.length);
 
-const ticksToDate = ticks => new Date(ticks / 1000 - 2208988800000); //Слава C#
+const ticksToDate = ticks => new Date((ticks - 621355968000000000) / 10000); //Слава C#
 
 export default class AuthService {
   static Auth(login: string, password: string): Promise<AuthState> {
