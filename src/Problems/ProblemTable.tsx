@@ -63,7 +63,7 @@ class ProblemTable extends React.Component<IProblemTableProps, IProblemTableStat
                         </TableCell>
                     </TableRow>
                     <TableRow>
-                        <TableCell> Internal id </TableCell>
+                        <TableCell> id </TableCell>
                         <TableCell> Name </TableCell>
                         <TableCell> Statement Url </TableCell>
                         <TableCell> Tests count </TableCell>
@@ -82,7 +82,7 @@ class ProblemTable extends React.Component<IProblemTableProps, IProblemTableStat
                                 <TableRow
                                     onClick={() => this.props.onRowSelection(problem.internalProblemId)}
                                     selected={problem.isSelected} key={problem.id}>
-                                    <TableCell>{problem.internalProblemId}</TableCell>
+                                    <TableCell>{problem.id}</TableCell>
                                     <TableCell>{problem.name}</TableCell>
                                     <TableCell>
                                         <a href={problem.statementUrl} onClick={(e) => e.stopPropagation()} target='_blank'>
