@@ -1,13 +1,13 @@
-import * as React from 'react';
+import { StyleRules, withStyles } from 'material-ui/styles';
 import Table, { TableFooter, TablePagination } from 'material-ui/Table';
-import TableRow from 'material-ui/Table/TableRow';
-import TableCell from 'material-ui/Table/TableCell';
 import TableBody from 'material-ui/Table/TableBody';
+import TableCell from 'material-ui/Table/TableCell';
 import TableHead from 'material-ui/Table/TableHead';
+import TableRow from 'material-ui/Table/TableRow';
 import TextField from 'material-ui/TextField';
-import { IProblem, ICollection } from '../typings';
+import * as React from 'react';
+import { ICollection, IProblem } from '../typings';
 
-import { withStyles, StyleRules } from 'material-ui/styles';
 
 interface IProblemTableProps {
     problems: IProblem[];
@@ -78,7 +78,7 @@ class ProblemTable extends React.Component<IProblemTableProps, IProblemTableStat
                         this.props.problems &&
                         this.props.problems.filter(filterFunc)
                             .slice(this.state.currentPage * rowPerPage, (this.state.currentPage + 1) * rowPerPage)
-                            .map((problem, index) => (
+                            .map((problem: IProblem, index) => (
                                 <TableRow
                                     onClick={() => this.props.onRowSelection(problem.internalProblemId)}
                                     selected={problem.isSelected} key={problem.id}>
@@ -90,27 +90,27 @@ class ProblemTable extends React.Component<IProblemTableProps, IProblemTableStat
                                         </a>
                                     </TableCell>
                                     <TableCell>{problem.testsCount}</TableCell>
-                                    <TableCell>{problem.pretests.length}</TableCell>
+                                    <TableCell>{problem.pretests && problem.pretests.length}</TableCell>
                                     <TableCell>{problem.internalProblemId}</TableCell>
-                                    <TableCell>{problem.resourceLimits.timeLimitMillis}</TableCell>
-                                    <TableCell>{toMB(problem.resourceLimits.memoryLimitBytes)}</TableCell>
+                                    <TableCell>{problem.resourceLimits && problem.resourceLimits.timeLimitMillis}</TableCell>
+                                    <TableCell>{problem.resourceLimits && toMB(problem.resourceLimits.memoryLimitBytes)}</TableCell>
                                 </TableRow>
                             ))
                     }
                 </TableBody>
                 <TableFooter>
-                   {
-                       this.props.problems && this.props.problems.length > defaultRowsPerpage &&
-                       <TableRow>
-                        <TablePagination
-                            rowsPerPage={rowPerPage}
-                            page={this.state.currentPage}
-                            onChangePage={this.handlePageChanged}
-                            onChangeRowsPerPage={this.handleChangeRowsPerPage}
-                            count={this.props.problems.length}
-                            rowsPerPageOptions={[defaultRowsPerpage, 15, 25]}
-                        />
-                    </TableRow>}
+                    {
+                        this.props.problems && this.props.problems.length > defaultRowsPerpage &&
+                        <TableRow>
+                            <TablePagination
+                                rowsPerPage={rowPerPage}
+                                page={this.state.currentPage}
+                                onChangePage={this.handlePageChanged}
+                                onChangeRowsPerPage={this.handleChangeRowsPerPage}
+                                count={this.props.problems.length}
+                                rowsPerPageOptions={[defaultRowsPerpage, 15, 25]}
+                            />
+                        </TableRow>}
                 </TableFooter>
             </Table>
         );
